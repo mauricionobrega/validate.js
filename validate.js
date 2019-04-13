@@ -133,14 +133,19 @@
         var i;
 
         if ((element.length > 0) && (element[0].type === 'radio' || element[0].type === 'checkbox')) {
-            for (i = 0, elementLength = element.length; i < elementLength; i++) {
-                if (element[i].checked) {
-                    return element[i][attributeName];
-                }
-            }
+          var firstElement = element[0], returns;
+          for (i = 0, elementLength = element.length; i < elementLength; i++) {
+              if (element[i].checked) {
+                returns = element[i][attributeName];
+              }
+          }
 
-            return;
-        }
+          if (!returns && attributeName === 'id') {
+            returns = firstElement[attributeName];
+          }
+
+          return returns;
+      }
 
         return element[attributeName];
     };
@@ -156,7 +161,7 @@
         // return this for chaining
         return this;
     };
-    
+
     /*
      * @public
      *
@@ -170,7 +175,7 @@
 
     FormValidator.prototype.setRules = function(fields) {
         this.fields = {};
-        
+
         for (var i = 0, fieldLength = fields.length; i < fieldLength; i++) {
             var field = fields[i];
 
